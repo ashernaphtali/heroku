@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Specialty Products Shoppe</h1>
+{% for p in products %}
+<div class="instagram-rip-off">
+    <div class="card" style="width: 40vw;">
+        <img src="{{ p.image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ p.name }}</h5>
+          <p class="card-text">{{ p.description }}</p>
+          <h3>{{ p.price }}</h3><button class='btn btn-primary'>Add to Cart</button>
+        </div>
+      </div>
+</div>
+{% endfor %}
+{% endblock content %}
