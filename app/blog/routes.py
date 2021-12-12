@@ -34,4 +34,4 @@ def createPost():
             db.session.commit()
 
             return redirect(url_for('home'))
-    return render_template('createpost.html', form = form)
+    return render_template('create_post.html', form = form)
