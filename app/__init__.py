@@ -1,5 +1,12 @@
 from flask import Flask
 from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_marshmallow import Marshmallow
+from flask_cors import CORS
+
+
+
 
 # import our blueprints for registration
 from .blog.routes import blog
@@ -13,6 +20,10 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 login = LoginManager()
+CORS(app)
+
+
+
 
 @login.user_loader
 def load_user(user_id):

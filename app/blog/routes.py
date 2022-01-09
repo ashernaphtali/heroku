@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 
-from .forms import CreatePostForm
+from .forms import CreatePostForm, UpdatePostForm
 
 from app.models import Post
 
@@ -25,6 +25,57 @@ def pokeBikes():
     bikes = [dict['name'] for dict in my_data['names']]
     my_img = my_data['sprites']['default']
     return render_template('pokebikes.html',bikes=bikes, my_img=my_img)
+
+@blog.route('/blog/<int:id>')
+def individualPost(id):
+    post = Post.query.filter_by(id=id).first()
+    if post is None:
+        return redirect(url_for('blog.blogHome'))
+    return render_template('individualpost.html', p = post)
+
+@blog.route('/posts/delete/<int:id>', methods = ["POST"])
+@login_required
+def deletePost(id):
+    post = Post.query.filter_by(id=id).first()
+    if post.user_id != current_user.id:
+        return redirect(url_for('blog.blogHome'))
+
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('blog.blogHome'))
+
+@blog.route('/posts/update/<int:id>', methods = ["GET","POST"])
+@login_required
+def updatePost(id):
+    post = Post.query.filter_by(id=id).first()
+    if post.user_id != current_user.id:
+        return redirect(url_for('blog.blogHome'))
+    form = UpdatePostForm()
+    if request.method == "POST":
+        if form.validate():
+            
+            title = form.title.data
+            image = form.image.data
+            content = form.content.data
+            
+            if not title:
+                title = post.title
+            if not image:
+                image = post.image
+            if not content:
+                content = post.content
+
+            #Updating the post object
+            post.title = title
+            post.image =image
+            post.content = content
+
+            # commit to databse
+            db.session.commit()
+
+            return redirect(url_for('blog.individualPost', id=id))
+    return render_template('updatepost.html', form = form)    
+        
 
 @blog.route('/posts/create', methods = ["GET","POST"])
 @login_required

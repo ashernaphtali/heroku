@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Specialty Products Shoppe</h1>
+
+<div class="row justify-content-center mt-4">
 {% for p in products %}
-<div class="instagram-rip-off">
-    <div class="card" style="width: 40vw;">
+    <a class="card text-decoration-none text-dark" style="width: 18rem;" href='{{ url_for("shop.individualProduct", id=p.id) }}'>
         <img src="{{ p.image }}" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{ p.name }}</h5>
-          <p class="card-text">{{ p.description }}</p>
-          <h3>{{ p.price }}</h3><button class='btn btn-primary'>Add to Cart</button>
+            <h5 class="card-title">{{ p.name }}</h5>
+            <p class="card-text">{{ p.description }}</p>
+            <h3>{{ p.price }}</h3> <button class='btn btn-secondary'>Add To Cart</button>
         </div>
-      </div>
-</div>
+    </a>
 {% endfor %}
+</div>
 {% endblock content %}

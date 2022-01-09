@@ -65,3 +65,10 @@ def signMeUp():
 def logMeOut():
     logout_user()
     return redirect(url_for('auth.logMeIn'))
+
+
+
+@auth.route('/api/login', methods=["POST"])
+def apiLogin():
+    print('API endpoint reached')
+    return {'hi': 'there'}
